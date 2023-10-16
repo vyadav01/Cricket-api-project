@@ -8,6 +8,9 @@ const navUl = document.createElement("ul");
 const navLinkLivescore = document.createElement("li");
 const navLinkMatches = document.createElement("li");
 const navLinkSeries = document.createElement("li");
+const liveScoreATag = document.createElement("a");
+const matchesATag = document.createElement("a");
+const seriesATag = document.createElement("a");
 
 // adding attributes
 firstSection.setAttribute("id", "navBarSection");
@@ -20,12 +23,12 @@ divNavLinksWrapper.setAttribute("id", "navLinksWrapper");
 navLinkLivescore.setAttribute("class", "liLinks");
 navLinkMatches.setAttribute("class", "liLinks");
 navLinkSeries.setAttribute("class", "liLinks");
-navLinkLivescore.setAttribute("id", "LiveScores");
-navLinkMatches.setAttribute("id", "Matches");
-navLinkSeries.setAttribute("id", "Series");
+liveScoreATag.setAttribute("href", "#liveScore");
+
+
 
 // adding text in html page
-navLinkLivescore.textContent = "LiveScores";
+liveScoreATag.textContent = "LiveScores";
 navLinkMatches.textContent = "Matches";
 navLinkSeries.textContent = "Series";
 
@@ -39,7 +42,7 @@ divNavLinksWrapper.appendChild(navUl);
 navUl.appendChild(navLinkLivescore);
 navUl.appendChild(navLinkMatches);
 navUl.appendChild(navLinkSeries);
-
+navLinkLivescore.appendChild(liveScoreATag);
 // creating html elements for second section
 const secondSection = document.createElement("section");
 const divUpperHeading = document.createElement("div");
@@ -50,7 +53,7 @@ const seriesNameText = document.createElement("h2");
 //adding attributes
 secondSection.setAttribute("id", "liveScoresSection");
 divUpperHeading.setAttribute("id", "upperHeading");
-liveScoreText.setAttribute("id", "liveScoreText");
+liveScoreText.setAttribute("id", "liveScore");
 divSeriesName.setAttribute("id", "seriesName");
 seriesNameText.setAttribute("class", "seriesNameText");
 
@@ -62,7 +65,19 @@ const url =
   "https://api.cricapi.com/v1/currentMatches?apikey=398e42ac-b41d-4dc6-80e0-07b64160da58&offset=0";
 
 const series_id = "bd830e89-3420-4df5-854d-82cfab3e1e04";
-
+const matchCountryFlag = [];
+const countryFlag = {
+  India: "IN",
+  Australia: "AU",
+  Pakistan: "PK",
+  Sri_Lanka: "LK",
+  Afghanistan: "AF",
+  New_Zealand: "NZ",
+  South_Africa: "ZA",
+  England: "EN",
+  Bangladesh: "BD",
+  Neatherland: "NL",
+};
 
 // fetching the api data and show it on page
 fetch(url)
@@ -72,54 +87,30 @@ fetch(url)
   .then((data) => {
     // console.log(data);
 
-
-
     if (data.status === "success") {
       const dataLength = data.data.length;
       for (let index = 0; index < dataLength; index++) {
         if (series_id === data.data[index].series_id) {
           const liveMatchData = data.data[index];
 
-          
-          const matchCountryFlag = [];
-          const countryFlag = {
-            India: "IN",
-            Australia: "AU",
-            Pakistan: "PK",
-            Srilanka: "LK",
-            Afghanistan: "AF",
-            New_Zealand: "NZ",
-            South_Africa: "ZA",
-            England: "EN",
-            Bangladesh: "BD",
-            Neatherland: "NL"
-          };
           for (let index = 0; index < liveMatchData.teamInfo.length; index++) {
-           
             const element = liveMatchData.teamInfo[index].name;
-         
+
             const newElement = element.replace(" ", "_");
-            
 
             for (const key in countryFlag) {
               if (newElement === key) {
-               
                 matchCountryFlag.push(`${countryFlag[key]}`);
-                
               }
             }
           }
-         
 
           const dateTime = new Date(`${data.data[index].dateTimeGMT}`);
           const setTime = new Date();
           setTime.setTime(dateTime.getTime() + 19800000);
-          const f = new Intl.DateTimeFormat("en-us", {
-            timeStyle: "short"
+          const timeFormat = new Intl.DateTimeFormat("en-us", {
+            timeStyle: "short",
           });
-
-
-
 
           // creating html elements
           const matchWrapperDiv = document.createElement("div");
@@ -182,36 +173,32 @@ fetch(url)
           );
 
           imgSecondTeamFlag.setAttribute(
-            "src", `https://cdorg.b-cdn.net/flags/generic/${matchCountryFlag[1]}.svg`
+            "src",
+            `https://cdorg.b-cdn.net/flags/generic/${matchCountryFlag[1]}.svg`
           );
 
           matchName.textContent =
             `${data.data[index].name}, ${data.data[index].matchType}`.toUpperCase();
-          venue.textContent = `${dateTime.toDateString()}, ${f.format(setTime)}, ${data.data[index].venue}`;
+          venue.textContent = `${dateTime.toDateString()}, ${timeFormat.format(
+            setTime
+          )}, ${data.data[index].venue}`;
           firstTeamNameText.textContent = `${data.data[index].teamInfo[0].shortname}`;
           vsText.textContent = "v/s";
           secondTeamNameText.textContent = `${data.data[index].teamInfo[1].shortname}`;
 
-
-
-
-
-          
           if (data.data[index].score.length === 2) {
             const x = data.data[index].score[0].inning;
-          
+
             if (x.includes(`${data.data[index].teamInfo[0].name}`)) {
               firstTeamInningText.textContent = `${data.data[index].score[0].inning}`;
               firstTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w} (${data.data[index].score[0].o})`;
               secondTeamInningText.textContent = `${data.data[index].score[1].inning}`;
               secondTeamRunsWickets.textContent = `${data.data[index].score[1].r}-${data.data[index].score[1].w} (${data.data[index].score[1].o})`;
-
             } else {
               firstTeamInningText.textContent = `${data.data[index].score[1].inning}`;
               firstTeamRunsWickets.textContent = `${data.data[index].score[1].r}-${data.data[index].score[1].w} (${data.data[index].score[1].o})`;
               secondTeamInningText.textContent = `${data.data[index].score[0].inning}`;
               secondTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w} (${data.data[index].score[0].o})`;
-
             }
           } else if (data.data[index].score.length === 1) {
             if (x.includes(`${data.data[index].teamInfo[0].name}`)) {
@@ -219,16 +206,12 @@ fetch(url)
               firstTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w}  (${data.data[index].score[0].o})`;
               secondTeamInningText.textContent = "Bowling side";
               secondTeamRunsWickets.textContent = "Yet to Bat";
-
-
             } else {
               firstTeamInningText.textContent = "Bowling side";
               firstTeamRunsWickets.textContent = "Yet to Bat";
               secondTeamInningText.textContent = `${data.data[index].score[0].inning}`;
               secondTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w}  (${data.data[index].score[0].o})`;
             }
-
-
           } else {
             divMatchScore.style.display = "none";
           }
@@ -281,4 +264,3 @@ secondSection.appendChild(divUpperHeading);
 divUpperHeading.appendChild(liveScoreText);
 secondSection.appendChild(divSeriesName);
 divSeriesName.appendChild(seriesNameText);
-
