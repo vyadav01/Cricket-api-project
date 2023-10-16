@@ -185,8 +185,8 @@ fetch(url)
           vsText.textContent = "v/s";
           secondTeamNameText.textContent = `${data.data[index].teamInfo[1].shortname}`;
 
+          const x = data.data[index].score[0].inning;
           if (data.data[index].score.length === 2) {
-            const x = data.data[index].score[0].inning;
 
             if (x.includes(`${data.data[index].teamInfo[0].name}`)) {
               firstTeamInningText.textContent = `${data.data[index].score[0].inning}`;
