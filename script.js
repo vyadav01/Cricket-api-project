@@ -25,8 +25,6 @@ navLinkMatches.setAttribute("class", "liLinks");
 navLinkSeries.setAttribute("class", "liLinks");
 liveScoreATag.setAttribute("href", "#liveScore");
 
-
-
 // adding text in html page
 liveScoreATag.textContent = "LiveScores";
 navLinkMatches.textContent = "Matches";
@@ -65,7 +63,7 @@ const url =
   "https://api.cricapi.com/v1/currentMatches?apikey=398e42ac-b41d-4dc6-80e0-07b64160da58&offset=0";
 
 const series_id = "bd830e89-3420-4df5-854d-82cfab3e1e04";
-const matchCountryFlag = [];
+
 const countryFlag = {
   India: "IN",
   Australia: "AU",
@@ -92,6 +90,7 @@ fetch(url)
       for (let index = 0; index < dataLength; index++) {
         if (series_id === data.data[index].series_id) {
           const liveMatchData = data.data[index];
+          const matchCountryFlag = [];
 
           for (let index = 0; index < liveMatchData.teamInfo.length; index++) {
             const element = liveMatchData.teamInfo[index].name;
