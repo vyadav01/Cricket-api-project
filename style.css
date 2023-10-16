@@ -6,6 +6,7 @@
     font-family: 'Poppins', sans-serif;
 
 }
+html{scroll-behavior:smooth}
 
 #navBarSection{
   background-color: #ededf7;  
@@ -34,12 +35,21 @@
 }
 
 .liLinks{
-    text-decoration: none;
     list-style: none;
     display: inline-block;
     padding: 15px 10px;
-    color: #2c0347;
     font-weight: 500;
+}
+
+.liLinks a{
+    text-decoration: none;
+    color: #2c0347;
+
+}
+
+.liLinks :hover{
+    color: #FD1046;
+    transition: all 0.2s ease-in;
 }
 
 #liveScoresSection{
@@ -51,7 +61,7 @@
    display: inline-block;
 }
 
-#liveScoreText{
+#liveScore{
     margin: 10px 0px;
     padding: 10px;
     border-bottom: 3px solid #b85757d3;
