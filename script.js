@@ -74,7 +74,7 @@ const countryFlag = {
   South_Africa: "ZA",
   England: "EN",
   Bangladesh: "BD",
-  Neatherland: "NL",
+  Netherlands: "NL",
 };
 
 // fetching the api data and show it on page
@@ -83,13 +83,16 @@ fetch(url)
     return response.json();
   })
   .then((data) => {
-    // console.log(data);
+    console.log(data);
+    const apiData = data.data;
+    
+    const dataLength = apiData.length;
+    
 
     if (data.status === "success") {
-      const dataLength = data.data.length;
       for (let index = 0; index < dataLength; index++) {
-        if (series_id === data.data[index].series_id) {
-          const liveMatchData = data.data[index];
+        if (series_id === apiData[index].series_id) {
+          const liveMatchData = apiData[index];
           const matchCountryFlag = [];
 
           for (let index = 0; index < liveMatchData.teamInfo.length; index++) {
@@ -104,7 +107,7 @@ fetch(url)
             }
           }
 
-          const dateTime = new Date(`${data.data[index].dateTimeGMT}`);
+          const dateTime = new Date(`${apiData[index].dateTimeGMT}`);
           const setTime = new Date();
           setTime.setTime(dateTime.getTime() + 19800000);
           const timeFormat = new Intl.DateTimeFormat("en-us", {
@@ -177,44 +180,46 @@ fetch(url)
           );
 
           matchName.textContent =
-            `${data.data[index].name}, ${data.data[index].matchType}`.toUpperCase();
+            `${apiData[index].name}, ${apiData[index].matchType}`.toUpperCase();
           venue.textContent = `${dateTime.toDateString()}, ${timeFormat.format(
             setTime
-          )}, ${data.data[index].venue}`;
-          firstTeamNameText.textContent = `${data.data[index].teamInfo[0].shortname}`;
+          )}, ${apiData[index].venue}`;
+          firstTeamNameText.textContent = `${apiData[index].teamInfo[0].shortname}`;
           vsText.textContent = "v/s";
-          secondTeamNameText.textContent = `${data.data[index].teamInfo[1].shortname}`;
+          secondTeamNameText.textContent = `${apiData[index].teamInfo[1].shortname}`;
+          
+          const str = ""
+          if (apiData[index].score.length === 2) {
+            const x = apiData[index].score[0].inning;
+            str += x;
 
-          const x = data.data[index].score[0].inning;
-          if (data.data[index].score.length === 2) {
-
-            if (x.includes(`${data.data[index].teamInfo[0].name}`)) {
-              firstTeamInningText.textContent = `${data.data[index].score[0].inning}`;
-              firstTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w} (${data.data[index].score[0].o})`;
-              secondTeamInningText.textContent = `${data.data[index].score[1].inning}`;
-              secondTeamRunsWickets.textContent = `${data.data[index].score[1].r}-${data.data[index].score[1].w} (${data.data[index].score[1].o})`;
+            if (str.includes(`${apiData[index].teamInfo[0].name}`)) {
+              firstTeamInningText.textContent = `${apiData[index].score[0].inning}`;
+              firstTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w} (${apiData[index].score[0].o})`;
+              secondTeamInningText.textContent = `${apiData[index].score[1].inning}`;
+              secondTeamRunsWickets.textContent = `${apiData[index].score[1].r}-${apiData[index].score[1].w} (${apiData[index].score[1].o})`;
             } else {
-              firstTeamInningText.textContent = `${data.data[index].score[1].inning}`;
-              firstTeamRunsWickets.textContent = `${data.data[index].score[1].r}-${data.data[index].score[1].w} (${data.data[index].score[1].o})`;
-              secondTeamInningText.textContent = `${data.data[index].score[0].inning}`;
-              secondTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w} (${data.data[index].score[0].o})`;
+              firstTeamInningText.textContent = `${apiData[index].score[1].inning}`;
+              firstTeamRunsWickets.textContent = `${apiData[index].score[1].r}-${apiData[index].score[1].w} (${apiData[index].score[1].o})`;
+              secondTeamInningText.textContent = `${apiData[index].score[0].inning}`;
+              secondTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w} (${apiData[index].score[0].o})`;
             }
-          } else if (data.data[index].score.length === 1) {
-            if (x.includes(`${data.data[index].teamInfo[0].name}`)) {
-              firstTeamInningText.textContent = `${data.data[index].score[0].inning}`;
-              firstTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w}  (${data.data[index].score[0].o})`;
+          } else if (apiData[index].score.length === 1) {
+            if (str.includes(`${apiData[index].teamInfo[0].name}`)) {
+              firstTeamInningText.textContent = `${apiData[index].score[0].inning}`;
+              firstTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w}  (${apiData[index].score[0].o})`;
               secondTeamInningText.textContent = "Bowling side";
               secondTeamRunsWickets.textContent = "Yet to Bat";
             } else {
               firstTeamInningText.textContent = "Bowling side";
               firstTeamRunsWickets.textContent = "Yet to Bat";
-              secondTeamInningText.textContent = `${data.data[index].score[0].inning}`;
-              secondTeamRunsWickets.textContent = `${data.data[index].score[0].r}-${data.data[index].score[0].w}  (${data.data[index].score[0].o})`;
+              secondTeamInningText.textContent = `${apiData[index].score[0].inning}`;
+              secondTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w}  (${apiData[index].score[0].o})`;
             }
           } else {
             divMatchScore.style.display = "none";
           }
-          matchStatusText.textContent = `${data.data[index].status}`;
+          matchStatusText.textContent = `${apiData[index].status}`;
 
           // appending html elements in the body tag of second section
           secondSection.appendChild(matchWrapperDiv);
