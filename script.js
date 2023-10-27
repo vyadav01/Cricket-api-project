@@ -187,10 +187,10 @@ fetch(url)
           firstTeamNameText.textContent = `${apiData[index].teamInfo[0].shortname}`;
           vsText.textContent = "v/s";
           secondTeamNameText.textContent = `${apiData[index].teamInfo[1].shortname}`;
-          
-          const str = ""
+          let x;
+          let str = ""
           if (apiData[index].score.length === 2) {
-            const x = apiData[index].score[0].inning;
+            x = apiData[index].score[0].inning;
             str += x;
 
             if (str.includes(`${apiData[index].teamInfo[0].name}`)) {
@@ -205,6 +205,8 @@ fetch(url)
               secondTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w} (${apiData[index].score[0].o})`;
             }
           } else if (apiData[index].score.length === 1) {
+            x = apiData[index].score[0].inning;
+            str += x;
             if (str.includes(`${apiData[index].teamInfo[0].name}`)) {
               firstTeamInningText.textContent = `${apiData[index].score[0].inning}`;
               firstTeamRunsWickets.textContent = `${apiData[index].score[0].r}-${apiData[index].score[0].w}  (${apiData[index].score[0].o})`;
