@@ -84,11 +84,11 @@ fetch(url)
     })
     .then((data) => {
         console.log(data);
-        const apiData = data.data;
-        const dataLength = apiData.length;
-
-
+        
+        
         if (data.status === "success") {
+            const apiData = data.data;
+            const dataLength = apiData.length;
             for (let index = 0; index < dataLength; index++) {
                 const dateTimeString = new Date(`${apiData[index].dateTimeGMT}`);
 
@@ -105,7 +105,6 @@ fetch(url)
 
                     for (const iterator of teamsNameArray) {
                         let newtext = iterator.replace(" ", "_");
-                        // console.log(newtext);
                         for (const key in countryFlag) {
                             if (newtext.includes(key)) {
                                 countryShortNameArray.push(countryFlag[key])
@@ -218,20 +217,12 @@ fetch(url)
 
             }
         } else {
-            // const errorMessageDiv = document.createElement("div");
-            // const errorText = document.createElement("p");
-            // errorMessageDiv.setAttribute("id", "errorMessageDiv");
-            // errorText.setAttribute("id", "errorText");
-            // errorText.textContent = "Today's api hits limit exceeded.";
-            // secondSection.appendChild(errorMessageDiv);
-            // errorMessageDiv.appendChild(errorText);
             error("Today's api hits limit exceeded.");
         }
         // console.log(teamsNameArray);
         // console.log(countryShortNameArray);
     })
 .catch((err) => {
-    // console.log(`Error: ${error}`)
     error(err);
     
 });
