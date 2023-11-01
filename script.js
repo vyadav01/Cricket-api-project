@@ -7,10 +7,9 @@ const divNavLinksWrapper = document.createElement("div");
 const navUl = document.createElement("ul");
 const navLinkLivescore = document.createElement("li");
 const navLinkMatches = document.createElement("li");
-const navLinkSeries = document.createElement("li");
 const liveScoreATag = document.createElement("a");
 const matchesATag = document.createElement("a");
-const seriesATag = document.createElement("a");
+
 
 // adding attributes
 firstSection.setAttribute("id", "navBarSection");
@@ -22,13 +21,13 @@ imgCwc_logo.setAttribute("alt", "CWC-logo");
 divNavLinksWrapper.setAttribute("id", "navLinksWrapper");
 navLinkLivescore.setAttribute("class", "liLinks");
 navLinkMatches.setAttribute("class", "liLinks");
-navLinkSeries.setAttribute("class", "liLinks");
 liveScoreATag.setAttribute("href", "#liveScore");
+matchesATag.setAttribute("href", "#matches");
 
 // adding text in html page
 liveScoreATag.textContent = "LiveScores";
-navLinkMatches.textContent = "Matches";
-navLinkSeries.textContent = "Series";
+matchesATag.textContent = "Matches";
+
 
 // appending html elements in the body tag of first section
 document.body.appendChild(firstSection);
@@ -39,12 +38,15 @@ nav.appendChild(divNavLinksWrapper);
 divNavLinksWrapper.appendChild(navUl);
 navUl.appendChild(navLinkLivescore);
 navUl.appendChild(navLinkMatches);
-navUl.appendChild(navLinkSeries);
 navLinkLivescore.appendChild(liveScoreATag);
+navLinkMatches.appendChild(matchesATag);
+
 // creating html elements for second section
 const secondSection = document.createElement("section");
 const divUpperHeading = document.createElement("div");
 const liveScoreText = document.createElement("h1");
+const recentMatchesText = document.createElement("h1");
+const upcomingMatchesText = document.createElement("h1");
 const divSeriesName = document.createElement("div");
 const seriesNameText = document.createElement("h2");
 
@@ -52,11 +54,16 @@ const seriesNameText = document.createElement("h2");
 secondSection.setAttribute("id", "liveScoresSection");
 divUpperHeading.setAttribute("id", "upperHeading");
 liveScoreText.setAttribute("id", "liveScore");
+liveScoreText.setAttribute("class", "liveScore");
+recentMatchesText.setAttribute("class", "liveScore");
+upcomingMatchesText.setAttribute("class", "liveScore");
 divSeriesName.setAttribute("id", "seriesName");
 seriesNameText.setAttribute("class", "seriesNameText");
 
 // adding text in html page
-liveScoreText.textContent = "Live Cricket Scores";
+liveScoreText.textContent = "Live Scores";
+recentMatchesText.textContent = "Recent Matches";
+upcomingMatchesText.textContent = "Upcoming Matches";
 seriesNameText.textContent = "ICC CRICKET WORLD CUP INDIA 2023";
 
 const url = "https://api.cricapi.com/v1/cricScore?apikey=398e42ac-b41d-4dc6-80e0-07b64160da58";
@@ -77,7 +84,7 @@ const countryFlag = {
 const countryShortNameArray = [];
 const teamsNameArray = [];
 const teamNameStrArray = [];
-const teamShortNameArray = [];
+
 fetch(url)
     .then((response) => {
         return response.json();
@@ -97,7 +104,7 @@ fetch(url)
                     secondMatchDateTimeStr === dateTimeString.toLocaleTimeString()
                 ) {
 
-                    // console.log(apiData[index]);
+                    console.log(apiData[index]);
                     teamsNameArray.splice(0, teamsNameArray.length);
                     teamsNameArray.push(apiData[index].t1);
                     teamsNameArray.push(apiData[index].t2);
@@ -125,7 +132,7 @@ fetch(url)
                     const matchWrapperDiv = document.createElement("div");
                     const divMatchInfo = document.createElement("div");
                     const matchName = document.createElement("h3");
-                    const venue = document.createElement("h4");
+                    const dateTime = document.createElement("h4");
                     const divTeamsNameFlag = document.createElement("div");
                     const divTeamFirst = document.createElement("div");
                     const imgFirstTeamFlag = document.createElement("img");
@@ -144,7 +151,7 @@ fetch(url)
                     matchWrapperDiv.setAttribute("class", "matchWrapperDiv");
                     divMatchInfo.setAttribute("class", "matchInfo");
                     matchName.setAttribute("class", "matchName");
-                    venue.setAttribute("class", "venue");
+                    dateTime.setAttribute("class", "dateTime");
                     divTeamsNameFlag.setAttribute("class", "teamsNameFlag");
                     divTeamFirst.setAttribute("class", "team");
                     imgFirstTeamFlag.setAttribute("class", "teamflag");
@@ -168,25 +175,22 @@ fetch(url)
                     teamNameStrArray.splice(0, teamNameStrArray.length);
                     for (const iterator of teamsNameArray) {
                         const teamNameStr = iterator.slice(0, iterator.length - 5).trim();
-                        teamNameStrArray.push(teamNameStr);
-                        
-                    }
-                    
-                    teamShortNameArray.splice(0, teamShortNameArray.length);
-                    for (const iterator of teamsNameArray) {
                         const teamShortNameStr = iterator.slice(-5).trim(); 
                         const tShorthandName = teamShortNameStr.slice(1, teamShortNameStr.length - 1);
-                        teamShortNameArray.push(tShorthandName);
+                        teamNameStrArray.push(teamNameStr);
+                        teamNameStrArray.push(tShorthandName);
                         
                     }
+                   
+                   
                     matchName.textContent =
-                        `${teamNameStrArray[0]}  v/s  ${teamNameStrArray[1]}, ${apiData[index].matchType}, ${apiData[index].ms}`.toUpperCase();
-                    venue.textContent = `${dateTimeString.toDateString()}, ${timeFormat.format(
+                        `${teamNameStrArray[0]}  v/s  ${teamNameStrArray[2]}, ${apiData[index].matchType}`.toUpperCase();
+                    dateTime.textContent = `${dateTimeString.toDateString()}, ${timeFormat.format(
                         setTime
                     )}`;
-                    firstTeamNameText.textContent = `${teamShortNameArray[0]}`;
+                    firstTeamNameText.textContent = `${teamNameStrArray[1]}`;
                     vsText.textContent = "v/s";
-                    secondTeamNameText.textContent = `${teamShortNameArray[1]}`;
+                    secondTeamNameText.textContent = `${teamNameStrArray[3]}`;
 
                     firstTeamRunsWickets.textContent = `${apiData[index].t1s}`;
 
@@ -198,7 +202,7 @@ fetch(url)
                     secondSection.appendChild(matchWrapperDiv);
                     matchWrapperDiv.appendChild(divMatchInfo);
                     divMatchInfo.appendChild(matchName);
-                    divMatchInfo.appendChild(venue);
+                    divMatchInfo.appendChild(dateTime);
                     matchWrapperDiv.appendChild(divTeamsNameFlag);
                     divTeamsNameFlag.appendChild(divTeamFirst);
                     divTeamFirst.appendChild(imgFirstTeamFlag);
@@ -231,6 +235,8 @@ fetch(url)
 document.body.appendChild(secondSection);
 secondSection.appendChild(divUpperHeading);
 divUpperHeading.appendChild(liveScoreText);
+divUpperHeading.appendChild(recentMatchesText);
+divUpperHeading.appendChild(upcomingMatchesText);
 secondSection.appendChild(divSeriesName);
 divSeriesName.appendChild(seriesNameText);
 

@@ -47,10 +47,13 @@ html{scroll-behavior:smooth}
 
 }
 
-.liLinks :hover{
+.liLinks a:hover{
     color: #FD1046;
     transition: all 0.2s ease-in;
 }
+/* .liLinks a:active{
+    color: #FD1046;
+} */
 
 #liveScoresSection{
     padding: 25px 50px 10px 50px ;
@@ -61,13 +64,25 @@ html{scroll-behavior:smooth}
    display: inline-block;
 }
 
-#liveScore{
-    margin: 10px 0px;
-    padding: 10px;
-    border-bottom: 3px solid #b85757d3;
-    
+.liveScore{
+    display: inline-block;
+    margin: 15px 60px 15px 0px;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.liveScore:hover{
+    color: #FD1046;
+    transition: all 0.2s ease-in-out;
+    border-bottom: 2px solid #b85757d3;
 
 }
+
+/* .liveScore:active{
+    color: #FD1046;
+    border-bottom: 2px solid #b85757d3;
+
+} */
+
 .seriesNameText{
     margin: 10px 0px;
     padding: 15px 10px;
@@ -76,7 +91,7 @@ html{scroll-behavior:smooth}
     color: #ffffff;
 
 }
-.venue{
+.dateTime{
     color: #3e3e3ecc;
     font-size: 15px;
     font-weight: 500;
