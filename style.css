@@ -69,6 +69,7 @@ html{scroll-behavior:smooth}
     margin: 15px 60px 15px 0px;
     font-size: 1.3rem;
     cursor: pointer;
+    border-bottom: 2px solid transparent;
 }
 .liveScore:hover{
     color: #FD1046;
@@ -76,12 +77,6 @@ html{scroll-behavior:smooth}
     border-bottom: 2px solid #b85757d3;
 
 }
-
-/* .liveScore:active{
-    color: #FD1046;
-    border-bottom: 2px solid #b85757d3;
-
-} */
 
 .seriesNameText{
     margin: 10px 0px;
