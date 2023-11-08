@@ -98,7 +98,7 @@ fetch(url)
             const dataLength = apiData.length;
             for (let index = 0; index < dataLength; index++) {
                 const dateTimeString = new Date(`${apiData[index].dateTimeGMT}`);
-
+                
                 if (
                     firstMatchDateTimeStr === dateTimeString.toLocaleTimeString() ||
                     secondMatchDateTimeStr === dateTimeString.toLocaleTimeString()
